@@ -11,6 +11,9 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "dgram": "^1.0.1",
+    "flyio": "^0.5.9",
+    "fs": "^0.0.1-security",
     "mpvue": "^1.0.11",
     "vuex": "^3.0.1"
   },
