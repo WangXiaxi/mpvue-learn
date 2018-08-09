@@ -1,197 +1,33 @@
 <template>
   <div class="home child-view">
-    <div class="home-header">
-      <router-link to="/site/index/search" tag="div" class="btn-opcity"></router-link>
-      <a href="tel:4006610571" class="btn-phone"></a>
-    </div>
-    <div class="home-banner" v-if="optionBanner.length>0">
-      <div class="banner-swiper">
-        <swiper :options="swiperOptionBanner" ref="bannerSwiper">
-          <swiper-slide v-for="(item, index) in optionBanner" :key="index">
-            <a :href="item.url"><img :src="imgHandle(item.img)"></a>
-          </swiper-slide>
-          <div class="home-swiper-pagination" slot="pagination"></div>
-        </swiper>
-      </div>
-      <div class="w-bg"></div>
-    </div>
-    <div class="home-nav">
-      <ul class="nav">
-        <router-link tag="li" to="/site/index/sitemap">
-          <i class="icon-img-nav1"></i>
-          <span>商品分类</span>
-        </router-link>
-        <router-link tag="li" to="/site/index/brand">
-          <i class="icon-img-nav2"></i>
-          <span>名特优品牌</span>
-        </router-link>
-        <router-link tag="li" to="/site/index/search-list?searchTitle=伴手礼&cat=14">
-          <i class="icon-img-nav3"></i>
-          <span>杭州礼包</span>
-        </router-link>
-        <router-link tag="li" to="/site/index/special-zone">
-          <i class="icon-img-nav4"></i>
-          <span>特惠专区</span>
-        </router-link>
-        <router-link tag="li" to="/site/index/news-list?id=9">
-          <i class="icon-img-nav5"></i>
-          <span>资讯中心</span>
-        </router-link>
-      </ul>
-    </div>
-    <!-- 占位 -->
-    <div class="spilter"></div>
-    <!-- 新品专区 -->
-    <div class="home-hot">
-      <div class="pub-tit">
-        <h3><span class="tit">优品热卖</span></h3>
-        <div class="hot-tips"></div>
-        <!-- <div class="more">
-          <span>更多</span>
-          <i></i>
-        </div> -->
-      </div>
-      <div class="hot-swiper" v-if="newgoodsRows.length>0">
-        <swiper :options="swiperOptionHot" ref="hotSwiper">
-          <swiper-slide v-for="(item, index) in newgoodsRows" :key="index">
-            <router-link class="hot-item" :to="`/site/index/product?id=${item.id}`">
-              <img :src="imgHandle(item.img, '@_@w@_@200@_@h@_@200')">
-              <div class="info">
-                <p class="tit">{{item.name}}</p>
-                <div class="price"><span class="tip">￥</span><span class="money">{{item.price}}</span></div>
-                <div class="sell-num">库存{{item.store_nums}}</div>
-              </div>
-            </router-link>
-          </swiper-slide>
-        </swiper>
-      </div>
-    </div>
-    <!-- 占位 -->
-    <div class="spilter"></div>
-    <!-- 甄选精货 -->
-    <div class="home-pick" v-if="optionHot.length>0">
-      <i class="icon-img-pick">
-      </i>
-      <div class="pick-swiper">
-        <swiper :options="swiperOptionPick" ref="pickSwiper">
-          <swiper-slide v-for="(item, index) in optionHot" :key="index">
-            <router-link :to="`/site/index/product?id=${item.id}`" class="item-pick">
-              <h3>
-                <span class="tit">{{item.name}}</span>
-                <span class="price"><span>￥</span>{{item.price.split(".")[0]}}.<span>{{item.price.split(".")[1]}}</span></span>
-                <div class="pick-more">
-                  速抢
-                </div>
-              </h3>
-              <img :src="imgHandle(item.img, '@_@w@_@200@_@h@_@200')">
-            </router-link>
-          </swiper-slide>
-        </swiper>
-      </div>
-    </div>
-    <div v-if="floorGoods.length>0" v-for="(item, index) in floorGoods" :key="index">
-      <!-- 占位 -->
-      <div class="spilter"></div>
-      <!-- 楼层 -->
-      <div class="home-floor" :class="`floor-${index+1}`">
-        <h1 class="tit-tip">{{item.cat_name}}</h1>
-        <router-link tag="div" :to="`/site/index/search-list?searchTitle=${item.cat_name}&cat=${item.id}`" class="floor-banner">
-          <img :src="imgHandle(item.ad_img)">
-        </router-link>
-        <ul class="floor-goods">
-          <li class="good-item" v-for="(items, indexs) in item.children" :key="indexs">
-            <router-link :to="`/site/index/product?id=${items.id}`">
-              <h2 class="tit">{{items.name}}</h2>
-              <p class="des">{{item.cat_name}}</p>
-              <div class="bot-part">
-                <div class="left">
-                  <div class="price">
-                    <span class="money-tip">￥</span>
-                    <span class="big-num">{{items.price.split(".")[0]}}.</span>
-                    <span class="small-num">{{items.price.split(".")[1]}}</span>
-                  </div>
-                  <div class="red-btn">立即购买</div>
-                </div>
-                <div class="right">
-                  <img :src="imgHandle(items.img, '@_@w@_@200@_@h@_@200')" />
-                </div>
-              </div>
-            </router-link>
-          </li>
-        </ul>
-      </div>
-    </div>
     <div class="copy-right">
       Copyright © 2018 忆杭网版权所有
     </div>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 import { getHome } from '@/api/api.js'
-import { URL } from '@/api/config'
-import { homeFloorJsonHandle } from 'common/js/datahandle'
 
 export default {
   data () {
-    return {
-      swiperOptionBanner: {
-        loop: true,
-        speed: 600,
-        pagination: '.home-swiper-pagination',
-        slidesPerView: 'auto',
-        centeredSlides: true,
-        paginationClickable: true,
-        autoplay: 3000,
-        autoHeight: true,
-        autoplayDisableOnInteraction: false
-      },
-      swiperOptionHot: {
-        slidesPerView: 'auto',
-        spaceBetween: 10,
-        freeMode: true
-      },
-      swiperOptionPick: {
-        direction: 'vertical',
-        speed: 300,
-        spaceBetween: 10,
-        autoplay: 3000,
-        autoplayDisableOnInteraction: false
-      },
-      optionBanner: [],
-      optionHot: [],
-      newgoodsRows: [],
-      floorGoods: []
-    }
   },
   created () {
-    this.loading.open({
-      spinnerType: 'triple-bounce'
-    })
     getHome().then((res) => {
+      console.log(res)
       if (res.code === 1) {
-        setTimeout(() => {
-          this.loading.close()
-        }, 500)
         this.optionBanner = res.data.homeSlide
         this.optionHot = res.data.finegoodsRows
         this.newgoodsRows = res.data.newgoodsRows
-        this.floorGoods = homeFloorJsonHandle(res.data)
       }
     })
   },
   methods: {
-    imgHandle (img, size) {
-      if (size) {
-        let handImg = img.replace(/\//g, '@_@')
-        return `${URL}/pic/thumb/img/${handImg}${size}`
-      }
-      return `${URL}/${img}`
-    }
+
   }
 }
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus">
 .swiper-container-horizontal
   .home-swiper-pagination
     position: absolute
