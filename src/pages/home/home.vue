@@ -1,5 +1,23 @@
 <template>
   <div class="home child-view">
+    <div class="home-header">
+      <router-link to="/site/index/search" tag="div" class="btn-opcity"></router-link>
+      <a href="tel:4006610571" class="btn-phone"></a>
+    </div>
+
+    <div class="home-banner" v-if="optionBanner.length>0">
+      <div class="banner-swiper">
+        <swiper :indicator-dots="false" interval="5000" duration="1000" :autoplay="true" v-if="optionBanner.length>0">
+           <block v-for="(item, index) in optionBanner" :key="index">
+            <swiper-item>
+              <image :src="URL + item.img" class="slide-image"/>
+            </swiper-item>
+          </block>
+        </swiper>
+      </div>
+      <div class="w-bg"></div>
+    </div>
+
     <div class="copy-right">
       Copyright © 2018 忆杭网版权所有
     </div>
@@ -8,9 +26,14 @@
 
 <script>
 import { getHome } from '@/api/api.js'
+import { URL } from '@/api/config.js'
 
 export default {
   data () {
+    return {
+      URL,
+      optionBanner: []
+    }
   },
   created () {
     getHome().then((res) => {
@@ -50,7 +73,6 @@ export default {
 .home
   background: #f2f2f2
   padding-top: 44px
-  padding-bottom: 59px
   .spilter
     width: 100%
     height: 10px
@@ -63,7 +85,7 @@ export default {
   max-width: 750px; /*no*/
   height: 44px
   background: #266E0A 50% 50%/100% 100% no-repeat
-  bg-image("~common/images/topbg")
+  bg-image('http://hz.ehanone.com/views/mobile_fun/javascript/main/static/img/topbg@3x.7c86438.png')
   .btn-phone
     position: absolute
     width: 45px
@@ -83,9 +105,9 @@ export default {
   overflow: hidden
   background: #FFFFFF
   .banner-swiper
-    .swiper-slide
-      width: 100%
-      img
+    swiper
+      height: 165px
+      image
         width: 100%
         height: 165px
   .w-bg
@@ -119,16 +141,16 @@ export default {
         height: 46px
         margin-bottom: 9px
         background: 50% 50%/100% 100% no-repeat
-        &.icon-img-nav5
-          bg-image("~common/images/home-nav5")
-        &.icon-img-nav4
-          bg-image("~common/images/home-nav4")
-        &.icon-img-nav3
-          bg-image("~common/images/home-nav3")
-        &.icon-img-nav2
-          bg-image("~common/images/home-nav2")
-        &.icon-img-nav1
-          bg-image("~common/images/home-nav1")
+        // &.icon-img-nav5
+        //   bg-image("~common/images/home-nav5")
+        // &.icon-img-nav4
+        //   bg-image("~common/images/home-nav4")
+        // &.icon-img-nav3
+        //   bg-image("~common/images/home-nav3")
+        // &.icon-img-nav2
+        //   bg-image("~common/images/home-nav2")
+        // &.icon-img-nav1
+        //   bg-image("~common/images/home-nav1")
       span
         font-size: 12px
         color: #666666
@@ -177,7 +199,7 @@ export default {
     width: 46px
     height: 52px
     background: right center/100% 100% no-repeat
-    bg-image("~common/images/home-pick")
+    // bg-image("~common/images/home-pick")
   .pick-swiper
     margin-left: 10px
     flex: 1
@@ -232,7 +254,7 @@ export default {
           color: #EB1212
           padding-right: 12px
           background: right center/auto 10px no-repeat
-          bg-image("~common/images/more")
+          // bg-image("~common/images/more")
       img
         position: absolute
         right: 0
@@ -368,7 +390,7 @@ export default {
   font-size: 0
   padding-right: 12px
   background: right center/auto 12px no-repeat
-  bg-image("~common/images/more")
+  // bg-image("~common/images/more")
   span
     color: RGB(235, 18, 18)
     font-size: 12px

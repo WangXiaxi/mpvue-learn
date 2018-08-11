@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import 'common/stylus/index.styl'
 
 Vue.config.productionTip = false
 App.mpType = 'app'
@@ -14,24 +15,35 @@ export default {
     pages: ['^pages/home/main', 'pages/index/main'],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarBackgroundColor: '#266e0a',
+      navigationBarTitleText: '忆杭网',
+      navigationBarTextStyle: '#fff'
     },
     tabBar: {
       list: [{
+        selectedIconPath: 'static/images/footer-nav/nav1c@3x.png',
+        iconPath: 'static/images/footer-nav/nav1@3x.png',
         pagePath: 'pages/home/main',
         text: '首页'
       },
       {
+        selectedIconPath: 'static/images/footer-nav/nav2c@3x.png',
+        iconPath: 'static/images/footer-nav/nav2@2x.png',
         pagePath: 'pages/index/main',
-        text: '其他'
+        text: '分类'
+      },
+      {
+        selectedIconPath: 'static/images/footer-nav/nav3c@3x.png',
+        iconPath: 'static/images/footer-nav/nav3@3x.png',
+        pagePath: 'pages/index/main',
+        text: '购物车'
+      },
+      {
+        selectedIconPath: 'static/images/footer-nav/nav4c@3x.png',
+        iconPath: 'static/images/footer-nav/nav4@2x.png',
+        pagePath: 'pages/index/main',
+        text: '我的'
       }]
-    },
-    navigationBarBackgroundColor: '#ffffff',
-    navigationBarTextStyle: 'black',
-    navigationBarTitleText: '微信接口功能演示',
-    backgroundColor: '#eeeeee',
-    backgroundTextStyle: 'light'
+    }
   }
 }
