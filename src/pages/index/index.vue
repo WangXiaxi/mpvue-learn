@@ -56,7 +56,7 @@ export default {
     }
   },
 
-  created () {
+  onLoad () {
     // 调用应用实例的方法获取全局数据
     this.getUserInfo()
     getHome()

@@ -19,7 +19,11 @@ export function homeFloorJsonHandle (data) {
   let f = JSON.parse(JSON.stringify(data.homecatsRows))
   let g = JSON.parse(JSON.stringify(data.homegoodsRows))
   f.map((o, i) => {
-    o.children = g[i].slice(0, 2)
+    o.children = g[i].slice(0, 2).map((c) => {
+      c.price1 = c.price.split('.')[0]
+      c.price2 = c.price.split('.')[1]
+      return c
+    })
   })
   return f
 }

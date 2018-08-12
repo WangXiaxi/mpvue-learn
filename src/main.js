@@ -14,10 +14,11 @@ export default {
     // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
     pages: ['^pages/home/main', 'pages/index/main'],
     window: {
-      backgroundTextStyle: 'light',
+      backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#266e0a',
       navigationBarTitleText: '忆杭网',
-      navigationBarTextStyle: '#fff'
+      navigationBarTextStyle: '#fff',
+      backgroundColor: '#f2f2f2'
     },
     tabBar: {
       list: [{
