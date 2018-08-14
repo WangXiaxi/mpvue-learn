@@ -1,7 +1,7 @@
 import axios from 'common/js/http.js'
 import { URL } from './config'
 import qs from 'qs'
-import { homeData } from 'common/mock/json'
+import { homeData, sitemapData } from 'common/mock/json'
 
 /** 首页分类 **/
 export function getHome () {
@@ -28,6 +28,8 @@ export function getProSitemap () {
   const url = URL + '/ajaxapi/getProSitemap'
   return axios.get(url).then((res) => {
     return Promise.resolve(res.data)
+  }).catch(() => {
+    return Promise.resolve(sitemapData)
   })
 }
 

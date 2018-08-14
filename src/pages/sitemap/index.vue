@@ -1,19 +1,56 @@
 <template>
   <div class="sitemap child-view">
-
+    <div class="left-class">
+      <scroll-view scroll-y class="scroll-box" v-if="sitemapJson.length>0">
+        <ul>
+          <li v-for="(item, index) in sitemapJson" @click.stop="goScroll(index)" :class="{'on': curIndex === index}" :key="index">{{item.name}}</li>
+          <li v-for="(item, index) in sitemapJson" @click.stop="goScroll(index)" :class="{'on': curIndex === index}" :key="index">{{item.name}}</li>
+        </ul>
+      </scroll-view>
+    </div>
+    <div class="right-class">
+      <scroll-view scroll-y class="scroll-box" v-if="sitemapJson.length>0">
+        <dl class="sitemap-son" v-for="(item, index) in sitemapJson" :key="index">
+          <dt ref="rightTit">
+            {{item.name}}
+          </dt>
+          <dd v-for="(itemson, indexson) in item.children" :key="indexson">
+            <navigator :url="'/site/index/search-list?searchTitle=' + itemson.name + '&cat=' + itemson.id">
+              <image v-if="itemson.img" :src="URL + itemson.img" />
+              <span>{{itemson.name}}</span>
+            </navigator>
+          </dd>
+        </dl>
+      </scroll-view>
+    </div>
   </div>
 </template>
 
 <script>
-// import { getProSitemap } from '@/api/api.js'
-// import { sitemapJsonHandle } from 'common/js/datahandle'
+import { getProSitemap } from '@/api/api.js'
+import { sitemapJsonHandle } from 'common/js/datahandle'
 import HeaderPub from 'base/header/header-pub'
 import { URL } from '@/api/config'
 
 export default {
   data () {
     return {
-      URL
+      URL,
+      sitemapJson: []
+    }
+  },
+  onLoad () {
+    this.getProSitemap() // 获取数据
+  },
+  methods: {
+    async getProSitemap () {
+      const { code, data } = await getProSitemap()
+      if (code !== 1) return
+      console.log(data)
+      this.sitemapJson = sitemapJsonHandle(data)
+    },
+    goScroll () {
+
     }
   },
   components: {
@@ -27,52 +64,39 @@ export default {
   widdth: 100%
   height: 100%
   display: flex
-  padding-top: 42px
-  padding-bottom: 50px
   background: #ECF0F3
   .left-class
     width: 94px
     height: 100%
     overflow: hidden
-    -webkit-overflow-scrolling: touch
     background: #FFF
+    position: relative
     .scroll-box
-      position: relative
-      width: 124px
       height: 100%
-      overflow-x: hidden
-      overflow-y: scroll
-      ul
-        width: 94px
-        li
-          font-size: 12px
-          height: 50px
-          text-align: center
-          display: flex
-          justify-content: center
-          align-items: center
-          position: relative
-          color: #666666
-          &:after
-            line-scale()
-          &.on
-            background: #ECF0F3
-            color: #333
+      width: 130px // 隐藏滚动条操作
+    ul
+      width: 94px
+      li
+        font-size: 12px
+        height: 50px
+        text-align: center
+        display: flex
+        justify-content: center
+        align-items: center
+        position: relative
+        color: #666666
+        &:after
+          line-scale()
+        &.on
+          background: #ECF0F3
+          color: #333
   .right-class
     flex: 1
     width: 0
     height: 100%
     overflow: hidden
     .scroll-box
-      -webkit-overflow-scrolling: auto
-      position: relative
-      width: calc(100% + 30px)
-      padding-right: 30px
-      height: 100%
-      overflow-x: hidden
-      overflow-y: scroll
-      &.scroll
-        -webkit-overflow-scrolling: touch
+      height: 100% // 隐藏滚动条操作
       .sitemap-son
         padding: 12px
         overflow: hidden
@@ -93,9 +117,9 @@ export default {
           margin-top: 5%
           background: #FFFFFF
           border-radius: 1px
-          &:nth-of-type(3n)
+          &:nth-of-type(3n + 1) // 坑点 样式nth 注意使用
             margin-right: 0
-          img
+          image
             display: block
             width: 100%
             height: 77.09px

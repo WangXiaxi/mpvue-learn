@@ -33,7 +33,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env
     }),
     new UglifyJsPlugin({
-      sourceMap: true
+      sourceMap: false
     }),
     // extract css into its own file
     new ExtractTextPlugin({

@@ -23,7 +23,7 @@ exports.cssLoaders = function (options) {
   var postcssLoader = {
     loader: 'postcss-loader',
     options: {
-      sourceMap: true
+      sourceMap: false
     }
   }
 
