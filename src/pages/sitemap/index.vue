@@ -4,14 +4,13 @@
       <scroll-view scroll-y class="scroll-box" v-if="sitemapJson.length>0">
         <ul>
           <li v-for="(item, index) in sitemapJson" @click.stop="goScroll(index)" :class="{'on': curIndex === index}" :key="index">{{item.name}}</li>
-          <li v-for="(item, index) in sitemapJson" @click.stop="goScroll(index)" :class="{'on': curIndex === index}" :key="index">{{item.name}}</li>
         </ul>
       </scroll-view>
     </div>
     <div class="right-class">
-      <scroll-view scroll-y class="scroll-box" v-if="sitemapJson.length>0">
-        <dl class="sitemap-son" v-for="(item, index) in sitemapJson" :key="index">
-          <dt ref="rightTit">
+      <scroll-view @scroll="scrollToAct" :scroll-with-animation="true" :scroll-into-view="toIndex" scroll-y class="scroll-box" v-if="sitemapJson.length>0">
+        <dl :id="'go-' + index" class="sitemap-son" v-for="(item, index) in sitemapJson" :key="index">
+          <dt>
             {{item.name}}
           </dt>
           <dd v-for="(itemson, indexson) in item.children" :key="indexson">
@@ -36,7 +35,8 @@ export default {
   data () {
     return {
       URL,
-      sitemapJson: []
+      sitemapJson: [],
+      toIndex: 'go-0' // 默认位置0
     }
   },
   onLoad () {
@@ -46,11 +46,20 @@ export default {
     async getProSitemap () {
       const { code, data } = await getProSitemap()
       if (code !== 1) return
-      console.log(data)
       this.sitemapJson = sitemapJsonHandle(data)
+      setTimeout(() => {
+        let query = wx.createSelectorQuery()
+        query.selectAll('.sitemap-son').boundingClientRect()
+        query.exec(function (res) {
+          console.log(res)
+        })
+      }, 2000)
     },
-    goScroll () {
-
+    goScroll (index) {
+      this.toIndex = 'go-' + index
+    },
+    scrollToAct (e) {
+      console.log(e)
     }
   },
   components: {
