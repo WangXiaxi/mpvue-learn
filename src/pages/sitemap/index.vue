@@ -8,7 +8,7 @@
       </scroll-view>
     </div>
     <div class="right-class">
-      <scroll-view @scroll="scrollToAct" :scroll-with-animation="true" :scroll-into-view="toIndex" scroll-y class="scroll-box" v-if="sitemapJson.length>0">
+      <scroll-view @scroll.stop="scrollToAct" :scroll-with-animation="true" :scroll-into-view="toIndex" scroll-y class="scroll-box" v-if="sitemapJson.length>0">
         <dl :id="'go-' + index" class="sitemap-son" v-for="(item, index) in sitemapJson" :key="index">
           <dt>
             {{item.name}}
@@ -36,6 +36,10 @@ export default {
     return {
       URL,
       sitemapJson: [],
+      topList: [],
+      curTop: 0,
+      time: '',
+      curIndex: 0,
       toIndex: 'go-0' // 默认位置0
     }
   },
@@ -50,17 +54,43 @@ export default {
       setTimeout(() => {
         let query = wx.createSelectorQuery()
         query.selectAll('.sitemap-son').boundingClientRect()
-        query.exec(function (res) {
-          console.log(res)
+        query.exec((res) => {
+          res[0].map((c) => {
+            this.topList.push(c.top)
+          })
         })
-      }, 2000)
+      }, 20)
     },
     goScroll (index) {
       this.toIndex = 'go-' + index
+      this.curIndex = index
     },
     scrollToAct (e) {
-      console.log(e)
+      let c = e.target.scrollTop
+      let _ = this
+      let t = _.topList
+      let len = t.length
+      if (c < t[0]) {
+        _.curIndex = 0
+        return
+      }
+      if (c >= t[len - 1]) {
+        _.curIndex = len - 1
+        return
+      }
+      for (let i = 0; i < len - 1; i++) {
+        if (c >= t[i] && c < t[i + 1]) {
+          _.curIndex = i
+        }
+      }
     }
+  },
+  computed: {
+  },
+  watch: {
+    // curTop (n, o) {
+    //   console.log(n)
+    // }
   },
   components: {
     HeaderPub
@@ -82,6 +112,7 @@ export default {
     position: relative
     .scroll-box
       height: 100%
+      overflow: hidden
       width: 130px // 隐藏滚动条操作
     ul
       width: 94px
@@ -106,6 +137,7 @@ export default {
     overflow: hidden
     .scroll-box
       height: 100% // 隐藏滚动条操作
+      overflow: hidden
       .sitemap-son
         padding: 12px
         overflow: hidden
